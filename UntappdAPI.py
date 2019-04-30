@@ -39,8 +39,7 @@ class UntappdAPI:
             return "client_id=" + self.client_id + "&client_secret=" + self.client_secret
 
     def _get_access_token(self):
-        """
-        Internal function to return the authed users access token
+        """Internal function to return the authed users access token
         """
         return "access_token=" + self.auth
 
@@ -92,6 +91,14 @@ class UntappdAPI:
         return json.loads(response.data.decode('utf-8'))
 
     def _find_venue_id(self, venue_name, address):
+        """Returns the venue id given a name and an address
+        Parameters
+        ----------
+        venue_name: str
+            The name of the venue
+        address: str
+            The street address of the venue
+        """
         data = self.venue_search(venue_name)
         address_df = pd.DataFrame()
         for j in range(data['response']['venues']['count']):
@@ -99,10 +106,22 @@ class UntappdAPI:
         return address_df.loc[address_df['venue_address'] == address]['venue_id'][0]
 
     def _find_beer_id(self, beer_name, brewery_name):
+        """Returns the beer id given the beer name and brewery name
+        Parameters
+        ----------
+        beer_name: str
+            The name of the beer
+        brewery_name: str
+            The name of the brewery that brewed this beer"""
         data = self.beer_search(beer_name, fields={"brewery_name": brewery_name})
         return data['response']['beers']['items'][0]['beer']['bid']
 
     def _find_brewery_id(self, brewery_name):
+        """Returns the brewery id given the brewery name
+        Parameters
+        ----------
+        brewery_name: str
+            The name of the brewery"""
         data = self.brewery_search(brewery_name)
         return data['response']['brewery']['items'][0]['brewery']['brewery_id']
 

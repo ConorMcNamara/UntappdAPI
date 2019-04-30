@@ -7,8 +7,7 @@ class UntappdUserActions(UntappdAPI):
         super().__init__(client_id, client_secret)
 
     def checkin(self, gmt_offset, timezone, beer_id, **kwargs):
-        """
-        Checks in a beer for a user
+        """Checks in a beer for a user
         Parameters
         ----------
         gmt_offset: int
