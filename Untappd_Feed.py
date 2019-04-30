@@ -9,8 +9,7 @@ class UntappdFeed(UntappdAPI):
         super().__init__(client_id, client_secret)
 
     def friend_feed(self, max_id=None, limit=None):
-        """
-        Returns the friends checkin feed
+        """Returns the friends checkin feed
         Parameters
         ----------
         max_id: str
@@ -82,7 +81,7 @@ class UntappdFeed(UntappdAPI):
         return self._do_get(method, auth, params)
 
     def venue_feed_id(self, venue_id, min_id=None, max_id=None, limit=None):
-        """Returns the feed of a venue
+        """Returns the feed of a venue by id
         Parameters
         ----------
         venue_id: str
@@ -91,7 +90,7 @@ class UntappdFeed(UntappdAPI):
             The checkin id of the most recent checkin (optional)
         max_id: int
             Checkin id the results will start with (optional)
-        limit:int
+        limit: int
             Number of results to return (optional)
         """
         method = "venue/checkins/" + venue_id
@@ -105,8 +104,26 @@ class UntappdFeed(UntappdAPI):
             params['limit'] = limit
         return self._do_get(method, auth, params)
 
+    def venue_feed_name(self, venue_name, address, min_id=None, max_id=None, limit=None):
+        """Returns the feed of a venue by name
+        Parameters
+        ----------
+        venue_name: str
+            The name of the venue
+        address: str
+            The street address of the venue
+        min_id: int
+            The checkin id of the most recent checkin (optional)
+        max_id: int
+            Checkin id the results will start with (optional)
+        limit: int
+            Number of results to return (optional)
+        """
+        venue_id = self._find_venue_id(venue_name, address)
+        return self.venue_feed_id(venue_id, min_id, max_id, limit)
+
     def beer_feed_id(self, beer_id, min_id=None, max_id=None, limit=None):
-        """Returns the feed of a beer
+        """Returns the feed of a beer by id
         Parameters
         ----------
         beer_id: str
@@ -130,7 +147,7 @@ class UntappdFeed(UntappdAPI):
         return self._do_get(method, auth, params)
 
     def beer_feed_name(self, beer_name, brewery_name, min_id=None, max_id=None, limit=None):
-        """Returns the feed of a beer
+        """Returns the feed of a beer by name
         Parameters
         ----------
         beer_name: str
@@ -148,7 +165,7 @@ class UntappdFeed(UntappdAPI):
         return self.beer_feed_id(beer_id, min_id, max_id, limit)
 
     def brewery_feed_id(self, brewery_id, min_id=None, max_id=None, limit=None):
-        """Returns the feed of a brewery
+        """Returns the feed of a brewery by id
         Parameters
         ----------
         brewery_id: str
@@ -172,7 +189,7 @@ class UntappdFeed(UntappdAPI):
         return self._do_get(method, auth, params)
 
     def brewery_feed_name(self, brewery_name, min_id=None, max_id=None, limit=None):
-        """Returns the feed of a brewery
+        """Returns the feed of a brewery by name
         Parameters
         ----------
         brewery_name: str
