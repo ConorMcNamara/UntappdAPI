@@ -1,4 +1,4 @@
-import UntappdAPI
+from UntappdAPI import UntappdAPI
 
 
 class UntappdUserInfo(UntappdAPI):
