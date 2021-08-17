@@ -1,19 +1,26 @@
+from typing import Dict, Optional
+
 from UntappdAPI import UntappdAPI
 
 
 class UntappdUserInfo(UntappdAPI):
 
-    def __init__(self, client_id, client_secret):
+    def __init__(self, client_id: str, client_secret: str) -> None:
         super().__init__(client_id, client_secret)
 
-    def user_badges(self, username, offset=None):
-        """Returns a list of the users badges
+    def user_badges(self, username: str, offset: Optional[int] = None) -> Dict:
+        """Returns a dictionary of the users badges
+
         Parameters
         ----------
         username: str
             The username of the user
-        offset: int
+        offset: int, default=None
             The numeric offset where the results start (optional)
+
+        Returns
+        -------
+        A dictionary of the users' badges
         """
         method = "user/badges/" + username
         auth = self._get_access_token()
@@ -22,16 +29,21 @@ class UntappdUserInfo(UntappdAPI):
             params['offset'] = offset
         return self._do_get(method, auth, params)
 
-    def user_friends(self, username, offset=None, limit=None):
-        """Returns a list of the users friends
+    def user_friends(self, username: str, offset: Optional[int] = None, limit: Optional[int] = None) -> Dict:
+        """Returns a dictionary of the users' friends
+
         Parameters
         ----------
         username: str
             The username of the user
-        offset: int
+        offset: int, default=None
             The numeric offset where the results start (optional)
-        limit: int
+        limit: int, default=None
             Number of results to return (optional)
+
+        Returns
+        -------
+        A dictionary of the users' friends
         """
         method = "user/friends/" + username
         auth = self._get_api_auth_token()
@@ -42,16 +54,21 @@ class UntappdUserInfo(UntappdAPI):
             params['limit'] = limit
         return self._do_get(method, auth, params)
 
-    def user_wishlist(self, username, sort=None, offset=None):
-        """Returns a list of the users wishlisted beers
+    def user_wishlist(self, username: str, sort: Optional[str] = None, offset: Optional[int] = None) -> Dict:
+        """Returns a dictionary of the users wishlisted beers
+
         Parameters
         ----------
         username: str
             The username of the user
-        sort: str
+        sort: str, default=None
             The value by which to sort the list (optional)
-        offset: int
+        offset: int, default=None
             The numeric offset where the results start (optional)
+
+        Returns
+        -------
+        A dictionary of the users' wishlisted beers
         """
         method = "user/wishlist/" + username
         auth = self._get_api_auth_token()
@@ -62,16 +79,21 @@ class UntappdUserInfo(UntappdAPI):
             params['offset'] = offset
         return self._do_get(method, auth, params)
 
-    def user_distinct_beers(self, username, sort=None, offset=None):
+    def user_distinct_beers(self, username: str, sort: Optional[str] = None, offset: Optional[int] = None):
         """Returns a list of the distinct beers a user has had
+
         Parameters
         ----------
         username: str
             The username of a user
-        sort: str
+        sort: str, default=None
             The value by which to sort the list (optional)
-        offset: int
+        offset: int, default=None
             The numeric offset where the results start (optional)
+
+        Returns
+        -------
+        A dictionary of the distinct beers a users has had
         """
         method = "user/beers/" + username
         auth = self._get_api_auth_token()
@@ -82,8 +104,8 @@ class UntappdUserInfo(UntappdAPI):
             params['offset'] = offset
         return self._do_get(method, auth, params)
 
-    def user_notifications(self):
-        """Returns a list of notifications for a user
+    def user_notifications(self) -> Dict:
+        """Returns a dictionary of notifications for a user
         """
         method = "notifications"
         auth = self._get_access_token()
