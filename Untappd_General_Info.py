@@ -4,7 +4,6 @@ from UntappdAPI import UntappdAPI
 
 
 class UntappdGeneralInfo(UntappdAPI):
-
     def __init__(self, client_id: str, client_secret: str) -> None:
         super().__init__(client_id, client_secret)
 
@@ -26,10 +25,12 @@ class UntappdGeneralInfo(UntappdAPI):
         auth = self._get_api_auth_token()
         params = {}
         if compact:
-            params['compact'] = compact
+            params["compact"] = compact
         return self._do_get(method, auth, params)
 
-    def brewery_info_name(self, brewery_name: str, compact: Optional[bool] = None) -> Dict:
+    def brewery_info_name(
+        self, brewery_name: str, compact: Optional[bool] = None
+    ) -> Dict:
         """Returns the information of a brewery by name
 
         Parameters
@@ -64,10 +65,12 @@ class UntappdGeneralInfo(UntappdAPI):
         auth = self._get_api_auth_token()
         params = {}
         if compact:
-            params['compact'] = compact
+            params["compact"] = compact
         return self._do_get(method, auth, params)
 
-    def beer_info_name(self, beer_name: str, brewery_name: str, compact: Optional[bool] = None) -> Dict:
+    def beer_info_name(
+        self, beer_name: str, brewery_name: str, compact: Optional[bool] = None
+    ) -> Dict:
         """Returns the information of a beer by name
 
         Parameters
@@ -104,10 +107,12 @@ class UntappdGeneralInfo(UntappdAPI):
         auth = self._get_api_auth_token()
         params = {}
         if compact:
-            params['compact'] = compact
+            params["compact"] = compact
         return self._do_get(method, auth, params)
 
-    def venue_info_name(self, venue_name: str, address: str, compact: Optional[bool] = None):
+    def venue_info_name(
+        self, venue_name: str, address: str, compact: Optional[bool] = None
+    ):
         """Returns the information of a venue by name
 
         Parameters
@@ -160,5 +165,5 @@ class UntappdGeneralInfo(UntappdAPI):
         auth = self._get_api_auth_token()
         params = {}
         if compact:
-            params['compact'] = compact
+            params["compact"] = compact
         return self._do_get(method, auth, params)

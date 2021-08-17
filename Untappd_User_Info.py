@@ -4,7 +4,6 @@ from UntappdAPI import UntappdAPI
 
 
 class UntappdUserInfo(UntappdAPI):
-
     def __init__(self, client_id: str, client_secret: str) -> None:
         super().__init__(client_id, client_secret)
 
@@ -26,10 +25,12 @@ class UntappdUserInfo(UntappdAPI):
         auth = self._get_access_token()
         params = {}
         if offset:
-            params['offset'] = offset
+            params["offset"] = offset
         return self._do_get(method, auth, params)
 
-    def user_friends(self, username: str, offset: Optional[int] = None, limit: Optional[int] = None) -> Dict:
+    def user_friends(
+        self, username: str, offset: Optional[int] = None, limit: Optional[int] = None
+    ) -> Dict:
         """Returns a dictionary of the users' friends
 
         Parameters
@@ -49,12 +50,14 @@ class UntappdUserInfo(UntappdAPI):
         auth = self._get_api_auth_token()
         params = {}
         if offset:
-            params['offset'] = offset
+            params["offset"] = offset
         if limit:
-            params['limit'] = limit
+            params["limit"] = limit
         return self._do_get(method, auth, params)
 
-    def user_wishlist(self, username: str, sort: Optional[str] = None, offset: Optional[int] = None) -> Dict:
+    def user_wishlist(
+        self, username: str, sort: Optional[str] = None, offset: Optional[int] = None
+    ) -> Dict:
         """Returns a dictionary of the users wishlisted beers
 
         Parameters
@@ -74,12 +77,14 @@ class UntappdUserInfo(UntappdAPI):
         auth = self._get_api_auth_token()
         params = {}
         if sort:
-            params['sort'] = sort
+            params["sort"] = sort
         if offset:
-            params['offset'] = offset
+            params["offset"] = offset
         return self._do_get(method, auth, params)
 
-    def user_distinct_beers(self, username: str, sort: Optional[str] = None, offset: Optional[int] = None):
+    def user_distinct_beers(
+        self, username: str, sort: Optional[str] = None, offset: Optional[int] = None
+    ):
         """Returns a list of the distinct beers a user has had
 
         Parameters
@@ -99,14 +104,13 @@ class UntappdUserInfo(UntappdAPI):
         auth = self._get_api_auth_token()
         params = {}
         if sort:
-            params['sort'] = sort
+            params["sort"] = sort
         if offset:
-            params['offset'] = offset
+            params["offset"] = offset
         return self._do_get(method, auth, params)
 
     def user_notifications(self) -> Dict:
-        """Returns a dictionary of notifications for a user
-        """
+        """Returns a dictionary of notifications for a user"""
         method = "notifications"
         auth = self._get_access_token()
         return self._do_get(method, auth, {}, None)

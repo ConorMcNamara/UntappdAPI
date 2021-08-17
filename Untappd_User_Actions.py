@@ -4,23 +4,24 @@ from UntappdAPI import UntappdAPI
 
 
 class UntappdUserActions(UntappdAPI):
-
     def __init__(self, client_id: str, client_secret: str):
         super().__init__(client_id, client_secret)
 
-    def checkin(self,
-                gmt_offset: int,
-                timezone: str,
-                beer_id: str,
-                foursquare_id: Optional[str],
-                geolat: Optional[int],
-                geolng: Optional[int],
-                shout: Optional[str],
-                rating: Optional[float],
-                facebook: Optional[bool],
-                twitter: Optional[bool],
-                foursquare: Optional[bool],
-                instagram: Optional[bool]) -> Dict:
+    def checkin(
+        self,
+        gmt_offset: int,
+        timezone: str,
+        beer_id: str,
+        foursquare_id: Optional[str] = None,
+        geolat: Optional[int] = None,
+        geolng: Optional[int] = None,
+        shout: Optional[str] = None,
+        rating: Optional[float] = None,
+        facebook: Optional[bool] = None,
+        twitter: Optional[bool] = None,
+        foursquare: Optional[bool] = None,
+        instagram: Optional[bool] = None,
+    ) -> Dict:
         """Checks in a beer for a user
 
         Parameters
@@ -31,23 +32,23 @@ class UntappdUserActions(UntappdAPI):
             The timezone of the user
         beer_id: str
             The id of the beer the user is checking in
-        foursquare_id: str
+        foursquare_id: str, default=None
             MD5 hash of the venue id (optional)
-        geolat: int
+        geolat: int, default=None
             The numeric latitude of the user, required if adding location (optional)
-        geolng: int
+        geolng: int, default=None
             The numeric longitude of the user, required if adding location (optional)
-        shout: str
+        shout: str, default=None
             Text to be added as a comment to the checkin (optional)
-        rating: float
+        rating: float, default=None
             The numeric rating for the beer being checked in (optional)
-        facebook: bool
+        facebook: bool, default=None
             Pass "on" to post the checkin to Facebook (optional)
-        twitter: bool
+        twitter: bool, default=None
             Pass "on" to post the checkin to Twitter (optional)
-        foursquare: bool
+        foursquare: bool, default=None
             Pass "on" to post the checkin to Foursquare (optional)
-        instagram: bool
+        instagram: bool, default=None
             Pass "on" to post the checkin to Instagram (optional)
 
         Returns
@@ -56,32 +57,32 @@ class UntappdUserActions(UntappdAPI):
         """
         method = "checkin/add"
         auth = self._get_access_token()
-        params = {
-            "gmt_offset": gmt_offset,
-            "timezone": timezone,
-            "bid": beer_id
-        }
+        params = {"gmt_offset": gmt_offset, "timezone": timezone, "bid": beer_id}
         if foursquare_id:
-            params['foursquare_id'] = foursquare_id
+            params["foursquare_id"] = foursquare_id
         if geolat:
-            params['geolat'] = geolat
+            params["geolat"] = geolat
         if geolng:
-            params['geolng'] = geolng
+            params["geolng"] = geolng
         if shout:
             if len(shout) > 256:
-                raise ValueError(f"Check-in shout is {len(shout)} characters whereas Untappd only supports shouts up to 256 characters")
+                raise ValueError(
+                    f"Check-in shout is {len(shout)} characters whereas Untappd only supports shouts up to 256 characters"
+                )
             params["shout"] = shout
         if rating:
             if rating > 5:
-                raise ValueError(f"Check-in rating is {rating} whereas Untappd only supports ratings up to 5")
+                raise ValueError(
+                    f"Check-in rating is {rating} whereas Untappd only supports ratings up to 5"
+                )
         if facebook:
-            params['facebook'] = 'on'
+            params["facebook"] = "on"
         if twitter:
-            params['twitter'] = 'on'
+            params["twitter"] = "on"
         if foursquare:
-            params['foursquare'] = 'on'
+            params["foursquare"] = "on"
         if instagram:
-            params['instagram'] = 'on'
+            params["instagram"] = "on"
         return self._do_post(method, auth, params)
 
     def add_comment(self, checkin_id: str, comment: str) -> Dict:
@@ -102,10 +103,9 @@ class UntappdUserActions(UntappdAPI):
         auth = self._get_access_token()
         if len(comment) > 140:
             raise ValueError(
-                f"Check-in comment is {len(comment)} characters whereas Untappd only supports comments up to 140 characters")
-        params = {
-            "comment": comment
-        }
+                f"Check-in comment is {len(comment)} characters whereas Untappd only supports comments up to 140 characters"
+            )
+        params = {"comment": comment}
         return self._do_post(method, auth, params)
 
     def remove_comment(self, comment_id: str) -> Dict:
@@ -154,9 +154,7 @@ class UntappdUserActions(UntappdAPI):
         """
         method = "user/wishlist/add"
         auth = self._get_access_token()
-        params = {
-            "bid": beer_id
-        }
+        params = {"bid": beer_id}
         return self._do_get(method, auth, params)
 
     def remove_from_wishlist(self, beer_id: str):
@@ -173,7 +171,5 @@ class UntappdUserActions(UntappdAPI):
         """
         method = "user/wishlist/delete"
         auth = self._get_access_token()
-        params = {
-            "bid": beer_id
-        }
+        params = {"bid": beer_id}
         return self._do_get(method, auth, params)

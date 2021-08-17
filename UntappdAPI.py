@@ -10,7 +10,7 @@ from urllib.parse import urlencode
 
 class UntappdAPI:
     def __init__(self, client_id: str, client_secret: str) -> None:
-        """ Base class for getting data from Untappd
+        """Base class for getting data from Untappd
 
         Parameters
         -----------
@@ -19,7 +19,7 @@ class UntappdAPI:
         client_secret: str
             The Untappd API Client Secret
         """
-        self.url = 'https://api.untappd.com/v4/'
+        self.url = "https://api.untappd.com/v4/"
         self.client_id = client_id
         self.client_secret = client_secret
         self.auth = None
@@ -37,19 +37,21 @@ class UntappdAPI:
         self.auth = auth
 
     def _get_api_auth_token(self) -> str:
-        """Internal function to get the access token if set, or the client ID and secret
-        """
+        """Internal function to get the access token if set, or the client ID and secret"""
         if self.auth:
             return "access_token=" + self.auth
         else:
-            return "client_id=" + self.client_id + "&client_secret=" + self.client_secret
+            return (
+                "client_id=" + self.client_id + "&client_secret=" + self.client_secret
+            )
 
     def _get_access_token(self) -> str:
-        """Internal function to return the authed users access token
-        """
+        """Internal function to return the authed users access token"""
         return "access_token=" + self.auth
 
-    def _do_get(self, method: str, auth: str, params: Dict, fields: Optional[Dict] = None) -> Dict:
+    def _do_get(
+        self, method: str, auth: str, params: Dict, fields: Optional[Dict] = None
+    ) -> Dict:
         """Internal Function to send GET requests
 
         Parameters
@@ -76,9 +78,11 @@ class UntappdAPI:
             response = self.https.request("GET", url, fields=fields)
         else:
             response = self.https.request("GET", url)
-        return json.loads(response.data.decode('utf-8'))
+        return json.loads(response.data.decode("utf-8"))
 
-    def _do_post(self, method: str, auth: str, params: Dict, fields: Optional[Dict] = None):
+    def _do_post(
+        self, method: str, auth: str, params: Dict, fields: Optional[Dict] = None
+    ):
         """Internal Function to send POST requests
 
         Parameters
@@ -104,7 +108,7 @@ class UntappdAPI:
             response = self.https.request("POST", url, fields=fields)
         else:
             response = self.https.request("POST", url)
-        return json.loads(response.data.decode('utf-8'))
+        return json.loads(response.data.decode("utf-8"))
 
     def _find_venue_id(self, venue_name: str, address: str) -> str:
         """Returns the venue id given a name and an address
@@ -122,9 +126,14 @@ class UntappdAPI:
         """
         data = self.venue_search(venue_name)
         address_df = pd.DataFrame()
-        for j in range(data['response']['venues']['count']):
-            address_df = pd.concat([address_df, pd.DataFrame.from_dict(data['response']['venues']['items'][j])])
-        return address_df.loc[address_df['venue_address'] == address]['venue_id'][0]
+        for j in range(data["response"]["venues"]["count"]):
+            address_df = pd.concat(
+                [
+                    address_df,
+                    pd.DataFrame.from_dict(data["response"]["venues"]["items"][j]),
+                ]
+            )
+        return address_df.loc[address_df["venue_address"] == address]["venue_id"][0]
 
     def _find_beer_id(self, beer_name: str, brewery_name: str) -> str:
         """Returns the beer id given the beer name and brewery name
@@ -141,7 +150,7 @@ class UntappdAPI:
         The beer_id given our beer name and brewery name
         """
         data = self.beer_search(beer_name, fields={"brewery_name": brewery_name})
-        return data['response']['beers']['items'][0]['beer']['bid']
+        return data["response"]["beers"]["items"][0]["beer"]["bid"]
 
     def _find_brewery_id(self, brewery_name: str) -> str:
         """Returns the brewery id given the brewery name
@@ -156,7 +165,7 @@ class UntappdAPI:
         The brewery_id given the brewery name
         """
         data = self.brewery_search(brewery_name)
-        return data['response']['brewery']['items'][0]['brewery']['brewery_id']
+        return data["response"]["brewery"]["items"][0]["brewery"]["brewery_id"]
 
     def brewery_search(self, query: str, fields: Optional[Dict] = None) -> Dict:
         """Returns the breweries matching a query
@@ -174,12 +183,12 @@ class UntappdAPI:
         """
         method = "search/brewery"
         auth = self._get_api_auth_token()
-        params = {
-            "q": query
-        }
+        params = {"q": query}
         return self._do_get(method, auth, params, fields)
 
-    def beer_search(self, query: str, sort: Optional[str] = None, fields: Optional[Dict] = None):
+    def beer_search(
+        self, query: str, sort: Optional[str] = None, fields: Optional[Dict] = None
+    ):
         """Returns the beer matching a query
 
         Parameters
@@ -197,14 +206,14 @@ class UntappdAPI:
         """
         method = "search/beer"
         auth = self._get_api_auth_token()
-        params = {
-            "q": query
-        }
+        params = {"q": query}
         if sort:
-            params['sort'] = sort
+            params["sort"] = sort
         return self._do_get(method, auth, params, fields)
 
-    def venue_search(self, query: str, sort: Optional[str] = None, fields: Optional[Dict] = None):
+    def venue_search(
+        self, query: str, sort: Optional[str] = None, fields: Optional[Dict] = None
+    ):
         """Returns the venue matching the query
 
         Parameters
@@ -222,11 +231,9 @@ class UntappdAPI:
         """
         method = "search/venue"
         auth = self._get_api_auth_token()
-        params = {
-            "q": query
-        }
+        params = {"q": query}
         if sort:
-            params['sort'] = sort
+            params["sort"] = sort
         return self._do_get(method, auth, params, fields)
 
     def foursquare_venue_search(self, venue_id: str) -> Dict:
@@ -246,8 +253,7 @@ class UntappdAPI:
         return self._do_get(method, auth, {})
 
     def beer_trending(self) -> Dict:
-        """Returns the trending macro and micro beers
-        """
+        """Returns the trending macro and micro beers"""
         method = "beer/trending"
         auth = self._get_api_auth_token()
         return self._do_get(method, auth, {})

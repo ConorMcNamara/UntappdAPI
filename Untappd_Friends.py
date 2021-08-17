@@ -4,13 +4,11 @@ from UntappdAPI import UntappdAPI
 
 
 class UntappdFriends(UntappdAPI):
-
     def __init__(self, client_id: str, client_secret: str) -> None:
         super().__init__(client_id, client_secret)
 
     def pending_friends(self) -> Dict:
-        """Returns a dictionary of all the pending friend requests for a user
-        """
+        """Returns a dictionary of all the pending friend requests for a user"""
         method = "user/pending"
         auth = self._get_access_token()
         return self._do_get(method, auth, {}, None)
