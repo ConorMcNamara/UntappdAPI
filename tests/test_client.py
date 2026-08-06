@@ -3,8 +3,8 @@ from __future__ import annotations
 import pytest
 import requests
 import responses
-from tests.conftest import BASE_URL, ok
 
+from tests.conftest import BASE_URL, ok
 from untappd import Untappd, UntappdAPIError, UntappdAuthError
 
 
